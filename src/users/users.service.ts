@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { jwtSecret } from 'src/auth/auth.module';
 
 dotenv.config();
 
@@ -39,7 +40,7 @@ export class UsersService {
     if (!isMatch) {
       return 'Invalid credentials';
     }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user.id }, jwtSecret, {
       expiresIn: '1h',
     });
     return { token };
