@@ -32,6 +32,21 @@ ENNOV BE test
 $ npm install
 ```
 
+## Database connection 
+
+this project uses prisma ORM with Mongodb. 
+create a .env and in it you place the following:
+
+```bash
+DATABASE_URL="your-mongo-db-connection Url"
+
+JWT_SECRET="Y82Xa94tza9zpuVI" //as jwt secret
+
+```
+
+
+
+
 ## Compile and run the project
 
 ```bash
