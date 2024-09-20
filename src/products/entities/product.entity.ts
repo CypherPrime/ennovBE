@@ -14,4 +14,7 @@ export class ProductEntity implements Product {
   createdAt: Date;
   @ApiProperty({ required: true })
   updatedAt: Date;
+
+  @ApiProperty({ required: true })
+  ownerId: string;
 }

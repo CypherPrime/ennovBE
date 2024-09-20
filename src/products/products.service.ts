@@ -25,7 +25,10 @@ export class ProductsService {
 
   findOne(id) {
     try {
-      return this.prisma.product.findUnique({ where: { id: id } });
+      return this.prisma.product.findUnique({
+        where: { id: id },
+        include: { owner: true },
+      });
     } catch (e) {
       return e;
     }

@@ -1,26 +1,82 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createUserDto: CreateUserDto) {
+    const salt = await bcrypt.genSalt();
+    const hashedPwd = await bcrypt.hash(createUserDto.password, salt);
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          name: createUserDto.name,
+          email: createUserDto.email,
+          password: hashedPwd,
+        },
+      });
+      return user;
+    } catch (e) {
+      return e;
+    }
+  }
+  async login(createUserDto: CreateUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: createUserDto.email },
+    });
+    if (!user) {
+      return 'User not found';
+    }
+    const isMatch = await bcrypt.compare(createUserDto.password, user.password);
+    if (!isMatch) {
+      return 'Invalid credentials';
+    }
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+    return { token };
   }
 
   findAll() {
-    return `This action returns all users`;
+    try {
+      return this.prisma.user.findMany();
+    } catch (e) {
+      return e;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id) {
+    try {
+      return this.prisma.user.findUnique({ where: { id: id } });
+    } catch (e) {
+      return e;
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id, updateUserDto: UpdateUserDto) {
+    try {
+      return this.prisma.user.update({
+        where: { id: id },
+        data: updateUserDto,
+      });
+    } catch (e) {
+      return e;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id) {
+    try {
+      return this.prisma.user.delete({ where: { id: id } });
+    } catch (e) {
+      return e;
+    }
   }
 }
