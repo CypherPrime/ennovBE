@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // applying global validation pipe to validate incoming requests
-
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   // initializing the documentation
