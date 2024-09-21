@@ -67,4 +67,16 @@ export class ProductsService {
       return e;
     }
   }
+
+  forUser(id: string) {
+    try {
+      return this.prisma.product.findMany({
+        where: {
+          ownerId: id,
+        },
+      });
+    } catch (e) {
+      return e;
+    }
+  }
 }

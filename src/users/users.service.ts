@@ -3,9 +3,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-import { jwtSecret } from 'src/auth/auth.module';
+// import { jwtSecret } from 'src/auth/auth.module';
 
 dotenv.config();
 
@@ -40,10 +40,10 @@ export class UsersService {
     if (!isMatch) {
       return 'Invalid credentials';
     }
-    const token = jwt.sign({ id: user.id }, jwtSecret, {
-      expiresIn: '1h',
-    });
-    return { token };
+    // const token = jwt.sign({ id: user.id }, jwtSecret, {
+    //   expiresIn: '1h',
+    // });
+    return { id: user.id, name: user.name, email: user.email };
   }
 
   findAll() {
@@ -56,7 +56,10 @@ export class UsersService {
 
   findOne(id) {
     try {
-      return this.prisma.user.findUnique({ where: { id: id } });
+      return this.prisma.user.findUnique({
+        where: { id: id },
+        include: { products: true },
+      });
     } catch (e) {
       return e;
     }

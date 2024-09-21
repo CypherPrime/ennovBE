@@ -30,6 +30,12 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get('/owner/:id')
+  @ApiOkResponse({ type: ProductEntity, isArray: true })
+  forUser(@Param('id') id: string) {
+    return this.productsService.forUser(id);
+  }
+
   @Get(':id')
   @ApiOkResponse({ type: ProductEntity })
   findOne(@Param('id') id: string) {
