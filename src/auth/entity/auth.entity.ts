@@ -4,9 +4,9 @@ export class AuthEntity {
   @ApiProperty()
   accessToken: string;
 
-  @ApiProperty({ required: true })
-  email: string;
+  // @ApiProperty({ required: true })
+  // email: string;
 
-  @ApiProperty({ required: true })
-  password: string;
+  // @ApiProperty({ required: true })
+  // password: string;
 }
