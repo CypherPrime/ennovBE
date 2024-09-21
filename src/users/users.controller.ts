@@ -13,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
+import { LoginUserDto } from './dto/create-user.dto';
 // import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
@@ -28,8 +29,8 @@ export class UsersController {
 
   @Post('login')
   @ApiOkResponse({ type: UserEntity })
-  login(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.login(createUserDto);
+  login(@Body() LoginUserDto: LoginUserDto) {
+    return this.usersService.login(LoginUserDto);
   }
 
   @Get()

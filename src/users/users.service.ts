@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -29,14 +30,14 @@ export class UsersService {
       return e;
     }
   }
-  async login(createUserDto: CreateUserDto) {
+  async login(LoginUserDto: LoginUserDto) {
     const user = await this.prisma.user.findUnique({
-      where: { email: createUserDto.email },
+      where: { email: LoginUserDto.email },
     });
     if (!user) {
       return 'User not found';
     }
-    const isMatch = await bcrypt.compare(createUserDto.password, user.password);
+    const isMatch = await bcrypt.compare(LoginUserDto.password, user.password);
     if (!isMatch) {
       return 'Invalid credentials';
     }
