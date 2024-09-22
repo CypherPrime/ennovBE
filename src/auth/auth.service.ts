@@ -25,7 +25,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password');
     }
     return {
-      accessToken: await this.jwtService.signAsync({ userId: user.id }),
+      accessToken: await this.jwtService.signAsync({
+        userId: user.id,
+        name: user.name,
+      }),
     };
   }
 }

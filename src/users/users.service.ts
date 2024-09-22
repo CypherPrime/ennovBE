@@ -77,8 +77,16 @@ export class UsersService {
     }
   }
 
-  remove(id) {
+  async remove(id) {
     try {
+      // yam
+      try {
+        await this.prisma.product.deleteMany({ where: { ownerId: id } });
+        await this.prisma.user.delete({ where: { id: id } });
+      } catch (e) {
+        return e;
+      }
+      // yams
       return this.prisma.user.delete({ where: { id: id } });
     } catch (e) {
       return e;
