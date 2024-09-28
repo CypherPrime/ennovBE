@@ -56,7 +56,7 @@ export class ProductsController {
 
   @Get('/search/:query')
   @ApiOkResponse({ type: ProductEntity, isArray: true })
-  seaech(@Param('id') query: string) {
+  seaech(@Param('query') query: string) {
     return this.productsService.search(query);
   }
 }
