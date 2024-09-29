@@ -20,7 +20,7 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException(`No user found for email: ${email}`);
     }
-    const isMatch = await bcrypt.compare(user.password, password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException('Invalid password');
     }
@@ -28,6 +28,7 @@ export class AuthService {
       accessToken: await this.jwtService.signAsync({
         userId: user.id,
         name: user.name,
+        email: user.email,
       }),
     };
   }
