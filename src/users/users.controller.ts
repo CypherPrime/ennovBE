@@ -18,7 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
-import { LoginUserDto } from './dto/create-user.dto';
+// import { LoginUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
@@ -32,11 +32,11 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Post('login')
-  @ApiOkResponse({ type: UserEntity })
-  login(@Body() LoginUserDto: LoginUserDto) {
-    return this.usersService.login(LoginUserDto);
-  }
+  // @Post('login')
+  // @ApiOkResponse({ type: UserEntity })
+  // login(@Body() LoginUserDto: LoginUserDto) {
+  //   return this.usersService.login(LoginUserDto);
+  // }
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -47,21 +47,24 @@ export class UsersController {
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);

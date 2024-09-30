@@ -62,7 +62,7 @@ export class UsersService {
         include: { products: true },
       });
     } catch (e) {
-      return e;
+      return e.message;
     }
   }
 

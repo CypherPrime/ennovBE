@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('ENNOV Test backend Documentation')
     .setDescription('ENNOV ->Routes and explanations')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
