@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+// import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+// import { JwtService } from '@nestjs/jwt';
 // import { jwtSecret } from 'src/auth/auth.module';
 
 dotenv.config();
@@ -14,22 +15,29 @@ dotenv.config();
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const salt = await bcrypt.genSalt();
-    const hashedPwd = await bcrypt.hash(createUserDto.password, salt);
-    try {
-      const user = await this.prisma.user.create({
-        data: {
-          name: createUserDto.name,
-          email: createUserDto.email,
-          password: hashedPwd,
-        },
-      });
-      return user;
-    } catch (e) {
-      return e;
-    }
-  }
+  // async create(createUserDto: CreateUserDto) {
+  //   const salt = await bcrypt.genSalt();
+  //   const hashedPwd = await bcrypt.hash(createUserDto.password, salt);
+  //   try {
+  //     const user = await this.prisma.user.create({
+  //       data: {
+  //         name: createUserDto.name,
+  //         email: createUserDto.email,
+  //         password: hashedPwd,
+  //       },
+  //     });
+  //     // return user;
+  //     return {
+  //       accessToken: await this.jwtService.signAsync({
+  //         userId: user.id,
+  //         name: user.name,
+  //         email: user.email,
+  //       }),
+  //     };
+  //   } catch (e) {
+  //     return e;
+  //   }
+  // }
   async login(LoginUserDto: LoginUserDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: LoginUserDto.email },
