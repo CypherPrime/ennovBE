@@ -12,16 +12,31 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     const message = exception.message.replace(/\n/g, '');
 
     switch (exception.code) {
+      // Handle unique constraint violations (e.g. duplicate entries)
       case 'P2002': {
         const status = HttpStatus.CONFLICT;
         response.status(status).json({
           statusCode: status,
-          message: message,
+          message: 'Unique constraint violation',
+          details: message,
         });
         break;
       }
+
+      // Handle record not found (e.g. when querying with findUnique)
+      case 'P2025': {
+        const status = HttpStatus.NOT_FOUND;
+        response.status(status).json({
+          statusCode: status,
+          message: 'Record not found',
+          details: message,
+        });
+        break;
+      }
+
+      // Catch all other Prisma client known request errors
       default:
-        // default 500 error code
+        // Fallback to the default exception handling for unknown cases
         super.catch(exception, host);
         break;
     }

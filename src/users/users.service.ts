@@ -64,14 +64,19 @@ export class UsersService {
   }
 
   findOne(id) {
-    try {
-      return this.prisma.user.findUnique({
-        where: { id: id },
-        include: { products: true },
-      });
-    } catch (e) {
-      return e.message;
-    }
+    const user = this.prisma.user.findUnique({
+      where: { id: id },
+      include: { products: true },
+    });
+
+    // if (!user) {
+    //   return {
+    //     success: false,
+    //     message: 'User not found',
+    //     statusCode: 404,
+    //   };
+    // }
+    return user;
   }
 
   update(id, updateUserDto: UpdateUserDto) {
